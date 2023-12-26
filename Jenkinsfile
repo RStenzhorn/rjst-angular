@@ -3,6 +3,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
     }
     environment {
+        booleanParam(name: 'INIT_DEPLOYMENT', defaultValue: false, description: '')
         HARBOR_URL = 'core.harbor.rjst.de'
         HARBOR_PREFIX = 'dev'
         VERSION = ''
@@ -86,7 +87,9 @@ pipeline {
                     withCredentials([file(credentialsId: 'kubeConfig', variable: 'KUBECONFIG')]) {
                         sh """sed -i 's/<TAG>/${VERSION}/' ${NAME}.yaml"""
                         sh """sed -i 's/<NAME>/${NAME}/' ${NAME}.yaml"""
-                        sh """kubectl delete -f ${NAME}.yaml"""
+                        if(!params.INIT_DEPLOYMENT) {
+                            sh """kubectl delete -f ${NAME}.yaml"""
+                        }
                         sh """kubectl apply -f ${NAME}.yaml"""
                     }
                 }

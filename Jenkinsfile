@@ -2,8 +2,10 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
     }
-    environment {
+    parameters {
         booleanParam(name: 'INIT_DEPLOYMENT', defaultValue: false, description: '')
+    }
+    environment {
         HARBOR_URL = 'core.harbor.rjst.de'
         HARBOR_PREFIX = 'dev'
         VERSION = ''

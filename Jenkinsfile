@@ -83,14 +83,16 @@ pipeline {
         }
         stage('K8s: DEPLOY') {
             steps {
-                container('kubectl') {
-                    withCredentials([file(credentialsId: 'kubeConfig', variable: 'KUBECONFIG')]) {
-                        sh """sed -i 's/<TAG>/${VERSION}/' ${NAME}.yaml"""
-                        sh """sed -i 's/<NAME>/${NAME}/' ${NAME}.yaml"""
-                        if(!params.INIT_DEPLOYMENT) {
-                            sh """kubectl delete -f ${NAME}.yaml"""
+                script {
+                    container('kubectl') {
+                        withCredentials([file(credentialsId: 'kubeConfig', variable: 'KUBECONFIG')]) {
+                            sh """sed -i 's/<TAG>/${VERSION}/' ${NAME}.yaml"""
+                            sh """sed -i 's/<NAME>/${NAME}/' ${NAME}.yaml"""
+                            if (!params.INIT_DEPLOYMENT) {
+                                sh """kubectl delete -f ${NAME}.yaml"""
+                            }
+                            sh """kubectl apply -f ${NAME}.yaml"""
                         }
-                        sh """kubectl apply -f ${NAME}.yaml"""
                     }
                 }
             }

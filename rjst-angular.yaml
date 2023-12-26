@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <NAME>
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <NAME>
+  template:
+    metadata:
+      labels:
+        app: <NAME>
+    spec:
+      containers:
+        - name: <NAME>
+          image: localhost/dev/<NAME>:<TAG>
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: <NAME>
+  namespace: dev
+  labels:
+    app: <NAME>
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: <NAME>
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: <NAME>
+  namespace: dev
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-red-https@kubernetescrd
+spec:
+  rules:
+  - host: angular.rjst.de
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: <NAME>
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - angular.rjst.de
+    secretName: <NAME>-cert
+
+---
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: <NAME>-cert
+  namespace: dev
+spec:
+  secretName: <NAME>-cert
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  dnsNames:
+    - angular.rjst.de

@@ -1,0 +1,19 @@
+= RJST-Angular
+ToXiCCuss
+v1.0, {docdate}
+:doctype: book
+:toc: left
+:toclevels: 3
+:sectnums:
+:sectnumlevels: 3
+:imagesdir: img/
+:table-caption!:
+:listing-caption: Listing
+:source-highlighter: pygments
+
+toc::[Inhaltsverzeichnis]
+
+[WARNING]
+====
+This is a test project to learn angular!!!
+====

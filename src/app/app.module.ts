@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { SqlAreaComponent } from './component/sql-area/sql-area.component';
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SqlAreaComponent } from './component/sql-area/sql-area.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

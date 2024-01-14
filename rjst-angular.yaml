@@ -29,17 +29,10 @@ spec:
               cpu: "4"
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             runAsNonRoot: true
             runAsUser: 1000
             runAsGroup: 1000
-          volumeMounts:
-            - name: cache-volume
-              mountPath: /var/cache/nginx/client_temp
-      volumes:
-        - name: cache-volume
-          emptyDir:
-            sizeLimit: 500Mi
 ---
 
 apiVersion: v1

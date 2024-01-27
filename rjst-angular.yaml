@@ -56,7 +56,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: traefik-red-https@kubernetescrd
 spec:
   rules:
-  - host: angular.vpn.rjst.de
+  - host: angular.von.rjst.de
     http:
       paths:
       - pathType: Prefix
@@ -68,7 +68,7 @@ spec:
               number: 80
   tls:
   - hosts:
-    - angular.vpn.rjst.de
+    - angular.rjst.de
     secretName: <NAME>-cert
 
 ---
@@ -84,4 +84,4 @@ spec:
     name: letsencrypt
     kind: ClusterIssuer
   dnsNames:
-    - angular.vpn.rjst.de
+    - angular.rjst.de
